@@ -172,6 +172,20 @@ Array.prototype.at = function (v) {
   let l = _.length; 
   return l == 0 ? null : _[wrap(parseInt(v), l)];
 }
+// Get the interpolated value along the array at a parameter in the range [0,1]
+Array.prototype.atParam = function (param) { 
+  if (this.length == 0) return null;
+  var loIndex = clamp(Math.floor(param * (this.length-1)), 0, this.length-1);
+  var hiIndex = clamp(Math.ceil(param * (this.length-1)), 0, this.length-1);
+  return mapValue(
+    param * (this.length-1) - loIndex,
+    0,
+    1,
+    this[loIndex],
+    this[hiIndex],
+    true
+  );
+}
 // Cumulative Sum
 Array.prototype.cumulativeSum = function () { 
   let o = []; 
