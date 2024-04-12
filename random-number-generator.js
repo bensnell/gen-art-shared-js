@@ -68,20 +68,24 @@ class RNG {
   }
 
   // random Decimal between 0 (inclusive) and 1 (exclusive)
-  decimal() {
+  dec() {
     this.useA = !this.useA;
     return this.useA ? this.A.generate() : this.B.generate();
   }
 
   // random Number between a (inclusive) and b (exclusive)
-  number(a, b) {
-    return a + (b - a) * this.d();
+  num(a, b) {
+    return a + (b - a) * this.dec();
   }
 
   // random Integer between a (inclusive) and b (inclusive)
   // requires a < b for proper probability distribution
-  integer(a, b) {
-    return Math.floor(this.n(a, b + 1));
+  int(a, b) {
+    return Math.floor(this.num(a, b + 1));
+  }
+
+  bool(a = 0.5) {
+    return this.dec() < a;
   }
   
   // random Gaussian
@@ -89,8 +93,8 @@ class RNG {
   gaussian(m = 0, s = 1, l = 1, h = 1) { 
     let a = 0;
     let b = 0;
-    while (a === 0) a = this.d();
-    while (b === 0) b = this.d();
+    while (a === 0) a = this.dec();
+    while (b === 0) b = this.dec();
     let o = Math.sqrt(-2 * Math.log(a)) * Math.cos(2 * Math.PI * b);
     return o * [o > 0 ? h : l] * s + m;
   }
@@ -116,7 +120,7 @@ class RNG {
       let sum = weightsCumulative[weightsCumulative.length-1];
       weightsCumulative = weightsCumulative.map(i => i/sum);
       // Calculate a random param
-      let param = this.d() ** sensitization;
+      let param = this.dec() ** sensitization;
       // Find the index of this param in the array
       let index = 0;
       while (index <= (weightsCumulative.length-1) && 
@@ -124,7 +128,7 @@ class RNG {
       // Return the value at this index
       return values[index];
     } else {
-      let index = Math.max(Math.min(Math.floor((this.d() ** 
+      let index = Math.max(Math.min(Math.floor((this.dec() ** 
         sensitization) * values.length), values.length-1), 0);
       return values[index];
     }
