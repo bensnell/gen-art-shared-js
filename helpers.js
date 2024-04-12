@@ -10,7 +10,7 @@ var shuffleList = (a, m) => {
     t, // tmp
     i = a.length; // index
   while (i > 1) {
-    r = (R.d() * i) | 0;
+    r = (R.dec() * i) | 0;
 
     t = a[--i];
     a[i] = a[r];
