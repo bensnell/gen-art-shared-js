@@ -100,8 +100,8 @@ class AABB {
   //  -1  outside
   //  0   on edge
   //  1   inside
-  contains(b, dims=3) {
-    return range(dims)
+  contains(b, nDims=3) {
+    return range(nDims)
     .reduce((res, i) => {
       return Math.min(
         res,
@@ -118,7 +118,7 @@ class AABB {
   //  -1    no intersection
   //  0     edge or point intersection
   //  1     overlapping area or volume intersection
-  intersects(B, dims=3) {
-    return this.boundingPoints().map(pt => B.contains(pt, dims)).max();
+  intersects(b, nDims=3) {
+    return this.boundingPoints().map(pt => b.contains(pt, nDims)).max();
   }
 }
