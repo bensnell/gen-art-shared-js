@@ -68,25 +68,25 @@ class RNG {
   }
 
   // random Decimal between 0 (inclusive) and 1 (exclusive)
-  d() {
+  decimal() {
     this.useA = !this.useA;
     return this.useA ? this.A.generate() : this.B.generate();
   }
 
   // random Number between a (inclusive) and b (exclusive)
-  n(a, b) {
+  number(a, b) {
     return a + (b - a) * this.d();
   }
 
   // random Integer between a (inclusive) and b (inclusive)
   // requires a < b for proper probability distribution
-  i(a, b) {
+  integer(a, b) {
     return Math.floor(this.n(a, b + 1));
   }
   
   // random Gaussian
   // l and h are multipliers applied to the lo's (<0) and hi's (>0)
-  g(m = 0, s = 1, l = 1, h = 1) { 
+  gaussian(m = 0, s = 1, l = 1, h = 1) { 
     let a = 0;
     let b = 0;
     while (a === 0) a = this.d();
@@ -99,7 +99,7 @@ class RNG {
   // Optionally provide weights for each value.
   // Optionally sensitize with a power applied to the random number
   //  to prioritize low or high values.
-  c(values, weights, sensitization=1) {
+  choose(values, weights, sensitization=1) {
     if (values.length == 0) return null;
     if (sensitization != null) {
       sensitization = clamp(sensitization, 0, Number.MAX_SAFE_INTEGER);
