@@ -94,4 +94,31 @@ class AABB {
       ].flat() : // m = 1
       range(2, 2, 2).map(i => new Vector(...i.map((j, k) => (j > 0 ? _.max : _.min).array()[k]))); // m = 0
   }
+
+  // Check if this AABB contains a vector `b`.
+  // Returns:
+  //  -1  outside
+  //  0   on edge
+  //  1   inside
+  contains(b, dims=3) {
+    return range(dims)
+    .reduce((res, i) => {
+      return Math.min(
+        res,
+        Math.sign(
+          this.max.array()[i] - b.array()[i]) * 
+          (b.array()[i] - this.min.array()[i]
+        )
+      );
+    }, 1);
+  }
+
+  // Does this AABB intersect with another?
+  // Returns:
+  //  -1    no intersection
+  //  0     edge or point intersection
+  //  1     overlapping area or volume intersection
+  intersects(B, dims=3) {
+    return this.boundingPoints().map(pt => B.contains(pt, dims)).max();
+  }
 }
