@@ -263,6 +263,19 @@ Array.prototype.take = function(...indices) {
     }
   });
 }
+// Check if two arrays are equal; that is: they are the same
+// length and contain the same elements in the same order.
+// https://stackoverflow.com/questions/3115982
+Array.prototype.equals = function(b) {
+  let a = this;
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
 
 // Hash of string or number
 var hash = (v, i = 0) => (typeof (v) == 'string' ? range(v.length).reduceArray((p, c) => p + v.charCodeAt(c) * 31 ** c) : v) * 31 ** i;

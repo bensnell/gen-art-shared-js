@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Addded
+- Array equals method
+
 ### Changed
 - RNG methods are spelled out completely.
 
