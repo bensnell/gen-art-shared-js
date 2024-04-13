@@ -429,8 +429,12 @@ class Vector {
     return result;
   }
 
-  array() {
-    return [this.x || 0, this.y || 0, this.z || 0];
+  array(nDims = 3) {
+    return [
+      this.x || 0, 
+      this.y || 0, 
+      this.z || 0
+    ].splice(0, nDims);
   }
 
   equals(x, y, z) {

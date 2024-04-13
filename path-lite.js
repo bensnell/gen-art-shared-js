@@ -63,6 +63,21 @@ class PathLite {
     return this.offsets.map(offset => this.getNormalAt(offset));
   }
 
+  get nVertices() {
+    return this.vertices.length;
+  }
+
+  get nSegments() {
+    return this.nVertices - (this.closed ? 0 : 1);
+  }
+
+  // This path is empty if there are no vertices, 
+  // NOT no segments. This path is valid as a point. 
+  // It does not need linear area to be valid.
+  isEmpty() {
+    return this.nVertices == 0;
+  }
+
   _flagVerticesDirty() {
     this._vertices_dirty = true;
     // Flag that length will need to be re-calculated.
@@ -90,23 +105,19 @@ class PathLite {
     return this._length;
   }
 
-  get _nSegments() {
-    return this.vertices.length - (this.closed ? 0 : 1);
-  }
-
   // Get offsets for each vertex
   get offsets() {
     this._cleanLength();
     return [0].concat([...this._length_segments_cumulative])
-      .splice(0, this.vertices.length);
+      .splice(0, this.nVertices);
   }
 
   get times() {
     return this.offsets.map(offset => offset / this.length);
   }
 
-  get lineSegments() {
-    return range(this._nSegments)
+  get segments() {
+    return range(this.nSegments)
       .map(i => [this.vertices.at(i), this.vertices.at(i+1)])
   }
 
@@ -130,7 +141,7 @@ class PathLite {
     point = point.at(0) instanceof Vector ? point.at(0) : new Vector(...point.flat());
 
     // Find the nearest location across all segments.
-    let curveLocation = range(this._nSegments)
+    let curveLocation = range(this.nSegments)
     .map(i => {
       let curveLocation = queryPointToSegmentAB(
         point,
@@ -167,7 +178,7 @@ class PathLite {
     return curveLocation;
   }
 
-  // Get the index interpolated between [0, _nSegments) for an offset
+  // Get the index interpolated between [0, nSegments) for an offset
   _getIndexInterpolatedAt(offset) {
 
     // Verify that there are clean lengths.
@@ -181,11 +192,11 @@ class PathLite {
       [0].concat(this._length_segments_cumulative)
       .indexInterpolated(offset),
       0,
-      this._nSegments
+      this.nSegments
     );
     
     // Wrap the index if requested.
-    if (this.closed) ii = ii % this._nSegments;
+    if (this.closed) ii = ii % this.nSegments;
 
     return ii;
   }
@@ -221,13 +232,13 @@ class PathLite {
 
       // Calculate the first offset vertex index to check
       let lastIndex = indexInterp;
-      for (let i = 0; i < this._nSegments+1; i++) {
+      for (let i = 0; i < this.nSegments+1; i++) {
 
         // Calculate the next index and clamp to correct range based on path closure.
         let index = Math.round(lastIndex) == lastIndex
           ? (lastIndex + direction)
           : (direction >= 0 ? Math.ceil(lastIndex) : Math.floor(lastIndex));
-        index = this.closed ? (index % this.vertices.length) : clamp(index, 0, this.vertices.length-1);
+        index = this.closed ? (index % this.nVertices) : clamp(index, 0, this.nVertices-1);
 
         // Is this index different from the last index?
         // If not, then we can't find the next unique vertex, so return null.

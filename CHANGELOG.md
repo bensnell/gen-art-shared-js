@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - RNG methods are spelled out completely.
+- Vector `array()` accepts `dims` arg.
+- PathLite `nVertices` and `nSegments` getters renamed.
 
 ## [0.0.1] - 2024-03-26
 
