@@ -290,6 +290,10 @@ Array.prototype.equals = function(b) {
   }
   return true;
 }
+// Remap all values in an array from one range to another
+Array.prototype.remap = function(start1, stop1 = 1, start2 = 0, stop2 = 1, withinBounds = true) {
+  return this.map(i => mapValue(i, start1, stop1, start2, stop2, withinBounds));
+}
 
 // Hash of string or number
 var hash = (v, i = 0) => (typeof (v) == 'string' ? range(v.length).reduceArray((p, c) => p + v.charCodeAt(c) * 31 ** c) : v) * 31 ** i;

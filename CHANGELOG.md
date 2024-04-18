@@ -6,11 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Addded
+### Added
 - Array equals method
 - AABB containment and intersection methods
 - `Array.atParam()` method
 - Path operations needed in PathLite
+- `Array.remap()` method
 
 ### Changed
 - RNG methods are spelled out completely.
